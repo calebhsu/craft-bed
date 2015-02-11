@@ -126,11 +126,14 @@
 				// handles rounded headboard
 				if (headRound == true) {
 					var dome;
+
+					// parts
 					dome = cylinder({
 						r: width / 2,
 						h: 4
 					});
 
+					// transformations
 					dome = dome.rotateX(90);
 					dome = dome.scale([1, 1, 0.70])
 					dome = dome.translate([width / 2, 0, mattressHeight * 3]);
