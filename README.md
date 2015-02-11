@@ -20,9 +20,11 @@ Parameterized bed model.
 ```html
 <craft>
 	<craft name="bed" module="craft-bed"/>
-	<bed size="2" headRound="0"></bed>
-	<bed width="76" length="80"></bed>			//standard king-sized bed
-	<bed bedFrame="0" mattressHeight="20"/></bed>
+	<bed width="76" length="80"></bed>
+	<bed bedFrame="0" mattressHeight="15"/></bed>
+	<bed size="0.5" headRound="0"></bed>
 	<bed></bed>
 </craft>
 ```
+
+![example](example.png)
