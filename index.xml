@@ -1,153 +1,160 @@
 <craft>
-	<parameter name="size" type="int" default="1"/>
-	<parameter name="width" type="int" default="40"/>
-	<parameter name="length" type="int" default="75"/>
-	<parameter name="mattressHeight" type="int" default="10"/>
-	<parameter name="legHeight" type="int" default="8"/>
-	<parameter name="headRound" type="int" default="1"/>
-	<parameter name="bedFrame" type="int" default="1"/>
-	<script type="text/openjscad">
+    <parameter name="width" type="int" default="40"/>
+    <parameter name="length" type="int" default="75"/>
+    <parameter name="mattressHeight" type="int" default="10"/>
+    <parameter name="legHeight" type="int" default="8"/>
+    <parameter name="headRound" type="int" default="1"/>
+    <parameter name="bedFrame" type="int" default="1"/>
+    
+    <group>
+        <!-- Frame -->
+        <script type="text/openjscad">
+            function main() {
+                var width = params.width;
+                var length = params.length;
+                var mattressHeight = params.mattressHeight;
+                var legHeight = params.legHeight;
+                var headRound = params.headRound;
+                
+                var legf1, legf2, legb1, legb2;
+                var head, base, baseHollow, leg, headLeg;
 
-		function main() {
-			var size = params.size;
-			var width = params.width;
-			var length = params.length;
-			var mattressHeight = params.mattressHeight;
-			var legHeight = params.legHeight;
-			var headRound = params.headRound;
-			var bedFrame = params.bedFrame;
+                // parts
+                head = cube({size: [width, mattressHeight * 3, 4]});
+                base = cube({size: [width + 2, length + 2, 5]});
+                baseHollow = cube({size: [width, length - 1, 2]});
+                leg = cube({size: [3, 3, legHeight]});
+                headLeg = cube({size: [4, 4, (mattressHeight * 3) + (legHeight - 2)]});
 
-			// assembled bed
-			if (bedFrame == true) {
-				return union(
-					mattress(),
-					pillow(),
-					frame()
-				).scale(size).rotateZ(180);
-			}
-			else {
-				return union(
-					mattress(),
-					pillow()
-				).scale(size).rotateZ(180);
-			}
+                // transformations
+                head = head.rotateX(90);
+                head = head.translate([0, 0, 4]);
 
-			// bed components
-			function mattress() {
-				var m;
+                base = base.translate([-1, 0, 4]);
 
-				// parts
-				// cube is scaled because certain dimensions may turn it into torus
-				m = cube({
-					size: 1, 
-					round: true
-				}).scale([width, length, mattressHeight]);
+                base = difference(
+                    base,
+                    baseHollow.translate([0, 1, 7])
+                );
 
-				// transformations
-				m = m.translate([0, 0, 6]);
+                // legs
+                legf1 = leg.translate([width - 2, length - 1, -legHeight + 4]);
+                legf2 = legf1.translate([-width + 1, 0, 0]);
 
-				return m;
-			}
+                legb1 = headLeg.translate([width - 2, -4, -legHeight + 4]);
+                legb2 = legb1.translate([-width, 0, 0]);
 
-			function pillow() {
-				var p, pAll;
-				var space, count, pAll;
+                // handles rounded headboard
+                if (headRound == true) {
+                    var dome;
 
-				// parts
-				p = cylinder({
-					r: 10,
-					h: 26
-				}).scale([0.4, 1, 1]).rotateY(90).translate([0, 10, 10 + mattressHeight]);
+                    // parts
+                    dome = cylinder({
+                        r: width / 2,
+                        h: 4
+                    });
 
-				// transformations
-				// narrow bed - smaller pillow
-				if (width < 38) {
-					p = cylinder({
-						r: 10,
-						h: (width - 8)
-					}).scale([0.4, 0.5, 1]).rotateY(90).translate([4, 5, 10 + mattressHeight]);
-				}
+                    // transformations
+                    dome = dome.rotateX(90);
+                    dome = dome.scale([1, 1, 0.70])
+                    dome = dome.translate([width / 2, 0, mattressHeight * 3]);
+                    dome = difference(
+                        dome,
+                        cube({size: [width, width / 2, 4]}).rotateX(90).translate([0, 0, (-width / 2) + 4])
+                    );
+                    
+                    head = union(head, dome);
+                }
 
-				// handles number of pillows depending on bed width
-				if (width / 2 < 34) {		
-					// single-pillow beds					
-					p = p.translate([(width - 26) / 2, 0, 0]);
-					return p;
-				}
-				else {						
-					// multi-pillow beds
-					count = 1;
-					pAll = p;
-					do {
-						space = width;
-						pAll = union(
-							pAll,
-							p.translate([(26 * count) + (2 * count), 0, 0])
-						);
-						count += 1;
-						space = space - (26 * count) - (2 * count);
-					} while ((space - 8) >= 34);
+                return union(head, base, legf1, legf2, legb1, legb2);
+            }
+        </script>
 
-					pAll = pAll.translate([space / 2, 0, 0])
+        <!-- Mattress -->
+        <script type="text/openjscad">
+            function main() {
+                var width = params.width;
+                var length = params.length;
+                var mattressHeight = params.mattressHeight;
+                var bedFrame = params.bedFrame;
 
-					return pAll;
-				}
-			}
+                // assembled bed
+                if (bedFrame == true) {
+                    return mattress();
+                }
+                else {
+                    return mattress();
+                }
 
-			function frame() {
-				var legf1, legf2, legb1, legb2;
-				var head, base, baseHollow, leg, headLeg;
+                // bed components
+                function mattress() {
+                    var m;
 
-				// parts
-				head = cube({size: [width, mattressHeight * 3, 4]});
-				base = cube({size: [width + 2, length + 2, 5]});
-				baseHollow = cube({size: [width, length - 1, 2]});
-				leg = cube({size: [3, 3, legHeight]});
-				headLeg = cube({size: [4, 4, (mattressHeight * 3) + (legHeight - 2)]});
+                    // parts
+                    // cube is scaled because certain dimensions may turn it into torus
+                    m = cube({
+                        size: 1, 
+                        round: true
+                    }).scale([width, length, mattressHeight]);
 
-				// transformations
-				head = head.rotateX(90);
-				head = head.translate([0, 0, 4]);
+                    // transformations
+                    m = m.translate([0, 0, 6]);
 
-				base = base.translate([-1, 0, 4]);
+                    return m;
+                }
+            }
+        </script>
+        
+        <!-- Pillow -->
+        <script type="text/openjscad">
+            function main() {
+                var width = params.width;
+                var mattressHeight = params.mattressHeight;
+                
+                var p, pAll;
+                var space, count, pAll;
 
-				base = difference(
-					base,
-					baseHollow.translate([0, 1, 7])
-				);
+                // parts
+                p = cylinder({
+                    r: 10,
+                    h: 26
+                }).scale([0.4, 1, 1]).rotateY(90).translate([0, 10, 10 + mattressHeight]);
 
-				// legs
-				legf1 = leg.translate([width - 2, length - 1, -legHeight + 4]);
-				legf2 = legf1.translate([-width + 1, 0, 0]);
+                // transformations
+                // narrow bed - smaller pillow
+                if (width < 38) {
+                    p = cylinder({
+                        r: 10,
+                        h: (width - 8)
+                    }).scale([0.4, 0.5, 1]).rotateY(90).translate([4, 5, 10 + mattressHeight]);
+                }
 
-				legb1 = headLeg.translate([width - 2, -4, -legHeight + 4]);
-				legb2 = legb1.translate([-width, 0, 0]);
+                // handles number of pillows depending on bed width
+                if (width / 2 < 34) {       
+                    // single-pillow beds                   
+                    p = p.translate([(width - 26) / 2, 0, 0]);
+                    return p;
+                }
+                else {                      
+                    // multi-pillow beds
+                    count = 1;
+                    pAll = p;
+                    do {
+                        space = width;
+                        pAll = union(
+                            pAll,
+                            p.translate([(26 * count) + (2 * count), 0, 0])
+                        );
+                        count += 1;
+                        space = space - (26 * count) - (2 * count);
+                    } while ((space - 8) >= 34);
 
-				// handles rounded headboard
-				if (headRound == true) {
-					var dome;
+                    pAll = pAll.translate([space / 2, 0, 0])
 
-					// parts
-					dome = cylinder({
-						r: width / 2,
-						h: 4
-					});
+                    return pAll;
+                }
+            }
+        </script>
+    </group>
 
-					// transformations
-					dome = dome.rotateX(90);
-					dome = dome.scale([1, 1, 0.70])
-					dome = dome.translate([width / 2, 0, mattressHeight * 3]);
-					dome = difference(
-						dome,
-						cube({size: [width, width / 2, 4]}).rotateX(90).translate([0, 0, (-width / 2) + 4])
-					);
-					
-					head = union(head, dome);
-				}
-
-				return union(head, base, legf1, legf2, legb1, legb2);
-			}
-		}
-
-	</script>
 </craft>
