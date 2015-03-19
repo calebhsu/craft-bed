@@ -25,3 +25,5 @@ Parameterized bed model.
     </lineup>
 </craft>
 ```
+
+![example](example.png)
