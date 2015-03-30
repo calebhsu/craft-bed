@@ -9,26 +9,20 @@
     <group>
         <!-- Frame -->
         <script type="text/openjscad">
-            function main() {
-                var width = params.width;
-                var length = params.length;
-                var mattressHeight = params.mattressHeight;
-                var legHeight = params.legHeight;
-                var headRound = params.headRound;
-                
+            function main() {              
                 var legf1, legf2, legb1, legb2;
                 var head, base, baseHollow, leg, headLeg;
 
                 // parts
-                head = cube({size: [width, mattressHeight * 3, 4]});
-                base = cube({size: [width + 2, length + 2, 5]});
-                baseHollow = cube({size: [width, length - 1, 2]});
-                leg = cube({size: [3, 3, legHeight]});
-                headLeg = cube({size: [4, 4, (mattressHeight * 3) + (legHeight - 2)]});
+                head = cube({size: [params.width, params.mattressHeight * 3, 4]});
+                base = cube({size: [params.width + 2, params.length + 2, 5]});
+                baseHollow = cube({size: [params.width, params.length - 1, 2]});
+                leg = cube({size: [3, 3, params.legHeight]});
+                headLeg = cube({size: [4, 4, (params.mattressHeight * 3) + (params.legHeight - 2)]});
 
                 // transformations
                 head = head.rotateX(90);
-                head = head.translate([0, length + 2, 4]);
+                head = head.translate([0, params.length + 2, 4]);
 
                 base = base.translate([-1, 0, 4]);
 
@@ -38,11 +32,11 @@
                 );
 
                 // legs
-                legf1 = leg.translate([width - 2, 0, -legHeight + 4]);
-                legf2 = legf1.translate([-width + 1, 0, 0]);
+                legf1 = leg.translate([params.width - 2, 0, -params.legHeight + 4]);
+                legf2 = legf1.translate([-params.width + 1, 0, 0]);
 
-                legb1 = headLeg.translate([width - 2, length - 2, -legHeight + 4]);
-                legb2 = legb1.translate([-width, 0, 0]);
+                legb1 = headLeg.translate([params.width - 2, params.length - 2, -params.legHeight + 4]);
+                legb2 = legb1.translate([-params.width, 0, 0]);
 
                 // handles rounded headboard
                 if (headRound == true) {
@@ -50,17 +44,17 @@
 
                     // parts
                     dome = cylinder({
-                        r: width / 2,
+                        r: params.width / 2,
                         h: 4
                     });
 
                     // transformations
                     dome = dome.rotateX(90);
                     dome = dome.scale([1, 1, 0.70])
-                    dome = dome.translate([width / 2, length + 2, mattressHeight * 3]);
+                    dome = dome.translate([params.width / 2, params.length + 2, params.mattressHeight * 3]);
                     dome = difference(
                         dome,
-                        cube({size: [width, width / 2, 4]}).rotateX(90).translate([0, 0, (-width / 2) + 4])
+                        cube({size: [params.width, params.width / 2, 4]}).rotateX(90).translate([0, 0, (-params.width / 2) + 4])
                     );
                     
                     head = union(head, dome);
@@ -73,11 +67,6 @@
         <!-- Mattress -->
         <script type="text/openjscad">
             function main() {
-                var width = params.width;
-                var length = params.length;
-                var mattressHeight = params.mattressHeight;
-                var bedFrame = params.bedFrame;
-
                 // assembled bed
                 if (bedFrame == true) {
                     return mattress();
@@ -94,7 +83,7 @@
                     m = cube({
                         size: 1, 
                         round: true
-                    }).scale([width, length, mattressHeight]);
+                    }).scale([params.width, params.length, params.mattressHeight]);
 
                     // transformations
                     m = m.translate([0, 1, 6]);
@@ -107,10 +96,6 @@
         <!-- Pillow -->
         <script type="text/openjscad">
             function main() {
-                var width = params.width;
-                var length = params.length;
-                var mattressHeight = params.mattressHeight;
-                
                 var p, pAll;
                 var space, count, pAll;
 
@@ -118,21 +103,21 @@
                 p = cylinder({
                     r: 10,
                     h: 26
-                }).scale([0.4, 1, 1]).rotateY(90).translate([0, length - 12, 10 + mattressHeight]);
+                }).scale([0.4, 1, 1]).rotateY(90).translate([0, params.length - 12, 10 + params.mattressHeight]);
 
                 // transformations
                 // narrow bed - smaller pillow
-                if (width < 38) {
+                if (params.width < 38) {
                     p = cylinder({
                         r: 10,
-                        h: (width - 8)
-                    }).scale([0.4, 0.5, 1]).rotateY(90).translate([4, 5, 10 + mattressHeight]);
+                        h: (params.width - 8)
+                    }).scale([0.4, 0.5, 1]).rotateY(90).translate([4, 5, 10 + params.mattressHeight]);
                 }
 
                 // handles number of pillows depending on bed width
-                if (width / 2 < 34) {       
+                if (params.width / 2 < 34) {       
                     // single-pillow beds                   
-                    p = p.translate([(width - 26) / 2, 0, 0]);
+                    p = p.translate([(params.width - 26) / 2, 0, 0]);
                     return p;
                 }
                 else {                      
@@ -140,7 +125,7 @@
                     count = 1;
                     pAll = p;
                     do {
-                        space = width;
+                        space = params.width;
                         pAll = union(
                             pAll,
                             p.translate([(26 * count) + (2 * count), 0, 0])
