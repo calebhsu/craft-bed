@@ -59,42 +59,26 @@
                     
                     head = union(head, dome);
                 }
-
-                return union(head, base, legf1, legf2, legb1, legb2);
+                
+                if (params.bedFrame) {
+                    return union(head, base, legf1, legf2, legb1, legb2);
+                }
             }
         </script>
 
         <!-- Mattress -->
-        <script type="text/openjscad">
+        <script type="text/craftml">
             function main() {
-                // assembled bed
-                if (params.bedFrame == true) {
-                    return mattress();
-                }
-                else {
-                    return mattress();
-                }
-
-                // bed components
-                function mattress() {
-                    var m;
-
-                    // cube is scaled because certain dimensions may turn it into torus
-                    m = cube({
-                        size: 1, 
-                        round: true
-                    }).scale([params.width, params.length, params.mattressHeight]);
-
-                    // transformations
-                    m = m.translate([0, 1, 6]);
-
-                    return m;
-                }
+                // cube is scaled because certain dimensions may turn it into torus
+                return cube({
+                    size: 1, 
+                    round: true
+                }).scale([params.width, params.length, params.mattressHeight]).translate([0, 1, 6]);
             }
         </script>
         
         <!-- Pillow -->
-        <script type="text/openjscad">
+        <script type="text/craftml">
             function main() {
                 var p, pAll;
                 var space, count, pAll;
