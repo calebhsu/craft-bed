@@ -8,8 +8,8 @@
     
     <group>
         <!-- Frame -->
-        <script type="text/openjscad">
-            function main() {              
+        <script type="text/craftml">
+            function main() {
                 var legf1, legf2, legb1, legb2;
                 var head, base, baseHollow, leg, headLeg;
 
@@ -39,7 +39,7 @@
                 legb2 = legb1.translate([-params.width, 0, 0]);
 
                 // handles rounded headboard
-                if (headRound == true) {
+                if (params.headRound == true) {
                     var dome;
 
                     // parts
@@ -68,7 +68,7 @@
         <script type="text/openjscad">
             function main() {
                 // assembled bed
-                if (bedFrame == true) {
+                if (params.bedFrame == true) {
                     return mattress();
                 }
                 else {
@@ -115,12 +115,12 @@
                 }
 
                 // handles number of pillows depending on bed width
-                if (params.width / 2 < 34) {       
-                    // single-pillow beds                   
+                if (params.width / 2 < 34) {
+                    // single-pillow beds
                     p = p.translate([(params.width - 26) / 2, 0, 0]);
                     return p;
                 }
-                else {                      
+                else {
                     // multi-pillow beds
                     count = 1;
                     pAll = p;
