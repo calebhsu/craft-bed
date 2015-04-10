@@ -12,6 +12,9 @@
             function main() {
                 var legf1, legf2, legb1, legb2;
                 var head, base, baseHollow, leg, headLeg;
+                
+                // handles minimum values
+                if (params.width < 20) { params.width = 20 };
 
                 // parts
                 head = cube({size: [params.width, params.mattressHeight * 3, 4]});
@@ -80,24 +83,29 @@
         <!-- Pillow -->
         <script type="text/craftml">
             function main() {
-                var p, pAll;
+                var p, pAll, decrement;
                 var space, count, pAll;
-
+                
+                decrement = 0;
+        
                 // parts
                 p = cylinder({
                     r: 10,
-                    h: 26
-                }).scale([0.4, 1, 1]).rotateY(90).translate([0, params.length - 12, 10 + params.mattressHeight]);
-
+                    h: 26 - decrement
+                }).scale([0.4, 1, 1]).rotateY(90).translate([0, params.length - 11, 10 + params.mattressHeight]);
+                
                 // transformations
-                // narrow bed - smaller pillow
-                if (params.width < 38) {
+                // smaller pillow for narrow bed
+                if (params.width < 35) {
+                    decrement = 35 - params.width;
+                    
                     p = cylinder({
                         r: 10,
-                        h: (params.width - 8)
-                    }).scale([0.4, 0.5, 1]).rotateY(90).translate([4, 5, 10 + params.mattressHeight]);
+                        h: 26 - decrement
+                    }).scale([0.4, 0.5, 1]).rotateY(90).translate([0 + (decrement / 2), params.length - 7, 10 + params.mattressHeight]);
+                    
                 }
-
+                
                 // handles number of pillows depending on bed width
                 if (params.width / 2 < 34) {
                     // single-pillow beds
