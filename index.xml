@@ -7,9 +7,9 @@
     <parameter name="bedFrame" type="int" default="1"/>
     
     <group>
-        <!-- Frame -->
         <script>
             function main() {
+                // Frame
                 var legf1, legf2, legb1, legb2;
                 var head, base, baseHollow, leg, headLeg;
                 
@@ -69,9 +69,9 @@
             }
         </script>
 
-        <!-- Mattress -->
         <script>
             function main() {
+                // Mattress
                 // cube is scaled because certain dimensions may turn it into torus
                 return cube({
                     size: 1, 
@@ -79,10 +79,10 @@
                 }).scale([params.width, params.length, params.mattressHeight]).translate([0, 1, 6]);
             }
         </script>
-        
-        <!-- Pillow -->
+
         <script>
             function main() {
+                // Pillow
                 var p, pAll, decrement;
                 var space, count, pAll;
                 
@@ -103,7 +103,7 @@
                         r: 10,
                         h: 26 - decrement
                     }).scale([0.4, 0.5, 1]).rotateY(90).translate([0 + (decrement / 2), params.length - 7, 10 + params.mattressHeight]);
-                    
+
                 }
                 
                 // handles number of pillows depending on bed width
