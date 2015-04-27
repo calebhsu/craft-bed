@@ -1,4 +1,4 @@
-<craft>
+<craft name="bed">
     <parameter name="width" type="int" default="40"/>
     <parameter name="length" type="int" default="75"/>
     <parameter name="mattressHeight" type="int" default="10"/>
