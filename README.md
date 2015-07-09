@@ -27,7 +27,7 @@ Parameterized bed model.
 ### Example
 ```html
 <craft>
-    <craft name="bed" module="calebhsu/craft-bed"/>
+    <craft name="bed" module="craft-bed"/>
     <row spacing="2">
         <bed width="76" length="80" headRound="0"></bed>
         <bed></bed>
