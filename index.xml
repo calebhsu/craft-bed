@@ -97,8 +97,8 @@
                 );
 
                 // legs
-                legf1 = leg.translate([params.width - 2, params.length - 2, -params.legHeight + 4]);
-                legf2 = legf1.translate([-params.width + 1, 1, 0]);
+                legf1 = leg.translate([params.width - 2, params.length - 1, -params.legHeight + 4]);
+                legf2 = legf1.translate([-params.width + 1, 0, 0]);
 
                 legb1 = headLeg.translate([params.width - 2, 0, -params.legHeight + 4]);
                 legb2 = legb1.translate([-params.width, 0, 0]);
