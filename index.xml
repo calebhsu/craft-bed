@@ -12,8 +12,8 @@
     <parameter name="headRound" type="int" default="1"/>
     <parameter name="bedFrame" type="int" default="1"/>
     
-    <g layout="centerXY() lineupZ(-38 -)">
-        <stack layout="alignY(5%)">
+    <g>
+        <stack layout="alignY(5%)" t="translate(0 0 6)">
             <script type="text/openjscad" class="pillow">
                 function main() {
                     // Pillow
