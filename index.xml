@@ -1,4 +1,10 @@
 <craft name="bed">
+    <style>
+        .frame { color: brown; }
+        .mattress { color: teal; }
+        .pillow { color: white; } 
+    </style>
+    
     <parameter name="width" type="int" default="40"/>
     <parameter name="length" type="int" default="75"/>
     <parameter name="mattressHeight" type="int" default="10"/>
@@ -8,7 +14,7 @@
     
     <g layout="centerXY() lineupZ(-38 -)">
         <stack layout="alignY(5%)">
-            <script>
+            <script type="text/openjscad" class="pillow">
                 function main() {
                     // Pillow
                     var p, pAll, decrement;
@@ -57,7 +63,7 @@
                 }
             </script>
             
-            <script>
+            <script type="text/openjscad" class="mattress">
                 function main() {
                     // Mattress
                     // cube is scaled because certain dimensions may turn it into torus
@@ -69,7 +75,7 @@
             </script>
         </stack>
             
-        <script>
+        <script type="text/openjscad" class="frame">
             function main() {
                 // Frame
                 var legf1, legf2, legb1, legb2;
