@@ -1,6 +1,6 @@
 {
   "name": "craft-bed",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Parameterized Bed Model",
   "main": "index.js",
   "scripts": {
