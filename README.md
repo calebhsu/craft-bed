@@ -29,7 +29,7 @@ Parameterized bed model.
 <craft>
     <craft name="bed" module="craft-bed"/>
     <row spacing="2">
-        <bed width="76" length="80" headRound="0"></bed>
+        <bed width="76" length="40" headRound="0"></bed>
         <bed></bed>
     </row>
 </craft>
